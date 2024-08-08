@@ -6,6 +6,9 @@ from typing import Optional
 from deepface import DeepFace
 from slugify import slugify
 import base64
+import os
+
+db_path = "database"
 
 # pylint: disable=broad-except
 
@@ -82,6 +85,13 @@ def upload(img_path: str, name: str):
         # Decode the base64 string
         png_recovered = base64.b64decode(img_path_padded)
         
+        if not os.path.exists(db_path):
+            # Create the directory
+            os.makedirs(db_path)
+            print(f"Directory '{db_path}' created.")
+        else:
+            print(f"Directory '{db_path}' already exists.")
+
         # Save the decoded image as a PNG file
         with open("database/" + name_slug + ".png", "wb") as file:
             file.write(png_recovered)
@@ -95,6 +105,14 @@ def upload(img_path: str, name: str):
 
 def recognize(img_path: str):
     try:
+
+        if not os.path.exists(db_path):
+            # Create the directory
+            os.makedirs(db_path)
+            print(f"Directory '{db_path}' created.")
+        else:
+            print(f"Directory '{db_path}' already exists.")
+
         dfs = DeepFace.find(img_path, db_path="database", model_name="Facenet", detector_backend="mtcnn")
 
         if len(dfs) == 0:
