@@ -113,7 +113,7 @@ def recognize(img_path: str):
         else:
             print(f"Directory '{db_path}' already exists.")
 
-        dfs = DeepFace.find(img_path, db_path="database", model_name="Facenet", detector_backend="mtcnn")
+        dfs = DeepFace.find(img_path, db_path="database", model_name="Facenet", detector_backend="mtcnn", anti_spoofing=False)
 
         if len(dfs) == 0:
             # you may consider to return unknown person's image here
